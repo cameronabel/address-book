@@ -30,15 +30,23 @@ AddressBook.prototype.deleteContact = function(id) {
 };
 
 // Business Logic for Contacts ---------
-function Contact(firstName, lastName, phoneNumber) {
+function Contact(firstName, lastName, phoneNumber, email, address) {
   this.firstName = firstName;
   this.lastName = lastName;
   this.phoneNumber = phoneNumber;
+  this.email = email;
+  this.address = address;
 }
 
 Contact.prototype.fullName = function() {
   return this.firstName + " " + this.lastName;
 };
+
+// Business Logic for Addresses ---------
+function Address(home, work) {
+  this.home = home;
+  this.work = work;
+}
 
 // User Interface Logic ---------
 let addressBook = new AddressBook();
@@ -51,6 +59,10 @@ function listContacts(addressBookToDisplay) {
     const contact = addressBookToDisplay.findContact(key);
     const li = document.createElement("li");
     li.append(contact.fullName());
+    li.append(" " + contact.phoneNumber);
+    li.append(" " + contact.email);
+    li.append(" " + contact.address.home);
+    li.append(" " + contact.address.work);
     li.setAttribute("id", contact.id);
     ul.append(li);
   });
@@ -62,7 +74,11 @@ function handleFormSubmission(event) {
   const inputtedFirstName = document.querySelector("input#new-first-name").value;
   const inputtedLastName = document.querySelector("input#new-last-name").value;
   const inputtedPhoneNumber = document.querySelector("input#new-phone-number").value;
-  let newContact = new Contact(inputtedFirstName, inputtedLastName, inputtedPhoneNumber);
+  const inputtedEmail = document.querySelector("input#new-email").value;
+  const inputtedHomeAddress = document.querySelector("input#home-address").value;
+  const inputtedWorkAddress = document.querySelector("input#work-address").value;
+  let newAddress = new Address(inputtedHomeAddress, inputtedWorkAddress);
+  let newContact = new Contact(inputtedFirstName, inputtedLastName, inputtedPhoneNumber, inputtedEmail, newAddress);
   addressBook.addContact(newContact);
   listContacts(addressBook);
 }
